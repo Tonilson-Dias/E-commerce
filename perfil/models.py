@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.forms import ValidationError
+
+import re
+
+from utils.validacpf import valida_cpf
 
 class Perfil(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, 
@@ -49,9 +54,22 @@ class Perfil(models.Model):
     )
 
     def __str__(self):
-        return f'{self.usuario.first_name} {self.usuario.last_name}'
+        return f'{self.usuario}'
     
     def  clean(self):
-        class Meta:
+        error_messagens = { }
+         
+        if not valida_cpf(self.cpf):
+              error_messagens['cpf'] = 'Digite um CPF valido'
+        
+        if re.search(r'[^0-9]', self.cep) or len(self.cep) < 8:
+             error_messagens['cep'] = 'CEP invalido, digite os 8 digite do CEP'
+
+        if error_messagens:
+             raise ValidationError(error_messagens)
+
+
+
+    class Meta:
             verbose_name = 'Perfil'
             verbose_name_plural = 'Perfies'

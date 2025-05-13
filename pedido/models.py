@@ -23,7 +23,7 @@ class Pedido(models.Model):
         return f'Pedido Numero. {self.pk}'
 
 
-class   ItemPedido(models.Model):
+class ItemPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     produto = models.CharField(max_length=255)
     produto_id = models.PositiveIntegerField()
