@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from PIL import Image
 from django.utils.text import slugify
+from utils import utils
 import os 
 
 
@@ -26,11 +27,11 @@ class Produto(models.Model):
     )
 
     def get_preco_formatado(self):
-        return f'R$ {self.preco_marketing:.2f}'.replace('.', ',')
+       return utils.formata_preco(self.preco_marketing)
     get_preco_formatado.short_description = 'Preço'
     
     def get_preco_promocional_formatado(self):
-        return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.', ',')
+        return utils.formata_preco(self.preco_marketing_promocional)
     get_preco_promocional_formatado.short_description = 'Preço Promo'
 
     @staticmethod
@@ -68,24 +69,16 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome
-""" 
-  Variacao:
-            nome - char
-            produto - FK Produto
-            preco - Float
-            preco_promocional - Float
-            estoque - Int
-"""
 
 class Variacao(models.Model):
     produto = models.ForeignKey("Produto", on_delete=models.CASCADE)
-    name = models.CharField(max_length=50, blank=True, null=True)
+    nome = models.CharField(max_length=50, blank=True, null=True)
     preco = models.FloatField()
     preco_promocional = models.FloatField(default=0)
     estoque = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return self.name or self.produto.name
+        return self.nome or self.produto.nome
     
     
     class Meta:

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+   {% include 'global/parcias/_head.html' %}
+
+   <title>  {% block titiluo %}E-commerce{% endblock %}</title>
+</head>
+
+<body>
+     
+    {% include 'global/parcias/_nav.html' %}
+
+
+   <main class="container mt-4 mb-4">
+      {% block conteudo %} {% endblock %}
+  </main>
+
+    {% include "global/parcias/_footer.html" %}
+</body>
+
+</html>
